@@ -120,7 +120,7 @@ typedef unsigned char uchartype;
 #ifdef DEEP_DEBUG
 	#define FORCE_INLINE inline
 #else
-	#define FORCE_INLINE __attribute__((always_inline)) inline
+	#define FORCE_INLINE /* __attribute__((always_inline)) */ inline
 #endif
 
 #ifdef CXX_LANG_MEMORY_DEBUG
