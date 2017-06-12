@@ -1,5 +1,5 @@
 # deep_engine
-High-performance C++ database storage engine
+High-performance C++ key/value database storage engine
 
 # Required packages
 sudo apt-get install g++ <br />
