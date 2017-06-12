@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.deepis</groupId>
+	<artifactId>deepis-jemalloc</artifactId>
+	<name>${project.artifactId}</name>
+	<packaging>pom</packaging>
+	<version>1.0.0</version>
+
+	<properties>
+		<maven.antrun.version>1.6</maven.antrun.version>
+		<cmake.build.dir>${basedir}/build/cmake</cmake.build.dir>
+	</properties>
+
+        <parent>
+                <groupId>com.deepis</groupId>
+                <artifactId>deepis-maven</artifactId>
+                <version>1.0.0</version>
+        </parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>${maven.antrun.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.deepis</groupId>
+						<artifactId>deepis-ant-dependencies</artifactId>
+						<version>${project.version}</version>
+						<type>pom</type>
+					</dependency>
+				 </dependencies>
+				<executions>
+					<execution>
+						<id>${project.name}-clean</id>
+						<phase>clean</phase>
+						<configuration>
+						<target>
+							<delete includeemptydirs="true" failonerror="false">
+								<fileset dir="${basedir}/build"/>
+							</delete>
+						</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>${project.name}-initialize</id>
+						<phase>initialize</phase>
+						<configuration>
+						<target>
+							<mkdir dir="${cmake.build.dir}"/>
+						</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>${artifactId}-generate-resources</id>
+						<phase>generate-resources</phase>
+						<configuration>
+							<target>
+								<exec dir="${cmake.build.dir}" executable="cmake" failonerror="true">
+									<arg value="-G"/>
+									<arg value="${cmake.project.generator}"/>
+									<arg value="${basedir}"/>
+								</exec>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>${project.name}-compile</id>
+						<phase>compile</phase>
+						<configuration>
+							<target unless="windows.build">
+								<exec dir="${basedir}" executable="${basedir}/build.sh" failonerror="true">
+								</exec>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>${project.name}-install</id>
+						<phase>install</phase>
+						<configuration>
+							<target>
+								<exec dir="${cmake.build.dir}" executable="cmake" failonerror="true">
+									<arg value="--build"/>
+									<arg value="${cmake.build.dir}"/>
+								</exec>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>${project.name}-test</id>
+						<phase>test</phase>
+						<configuration>
+							<target unless="windows.build">
+								<exec dir="${basedir}" executable="${basedir}/test.sh" failonerror="true">
+								</exec>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

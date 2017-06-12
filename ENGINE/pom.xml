@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.deepis</groupId>
+	<artifactId>deepis-db-init</artifactId>
+	<name>${project.artifactId}</name>
+	<packaging>pom</packaging>
+	<version>1.0.0</version>
+
+	<modules>
+		<module>common</module>
+		<module>service</module>
+	</modules>
+</project>

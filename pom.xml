@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.deepis</groupId>
+	<artifactId>deepis-root</artifactId>
+	<name>${project.artifactId}</name>
+	<packaging>pom</packaging>
+	<version>1.0.0</version>
+
+	<profiles>
+		<profile>
+			<id>build-default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<!-- ********************** -->
+				<!-- maven components       -->
+				<!-- ********************** -->
+
+				<module>build/maven</module>
+
+				<!-- ********************** -->
+				<!-- 3rd party components   -->
+				<!-- ********************** -->
+
+				<module>THIRDPARTY</module>
+
+				<!-- ********************** -->
+				<!-- deepis components   -->
+				<!-- ********************** -->
+
+				<module>PLATFORM</module>
+				<module>ENGINE</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>deep-unit-test</id>
+			<modules>
+				<module>build/maven</module>
+				<module>THIRDPARTY</module>
+				<module>PLATFORM</module>
+				<module>ENGINE</module>
+			</modules>
+		</profile>
+	</profiles>
+</project>

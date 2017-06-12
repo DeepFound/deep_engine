@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.deepis</groupId>
+	<artifactId>deepis-maven</artifactId>
+	<name>${project.artifactId}</name>
+	<packaging>pom</packaging>
+	<version>1.0.0</version>
+
+	<properties>
+		<assembly.version>2.2</assembly.version>
+		<maven.antrun.version>1.6</maven.antrun.version>
+		<maven.compiler.source>1.6</maven.compiler.source>
+		<maven.compiler.target>1.6</maven.compiler.target>
+		<maven.source.version>2.1.2</maven.source.version>
+		<commons-logging.version>1.1.1</commons-logging.version>
+
+		<deep.mysql.version.55>5.5.45</deep.mysql.version.55>
+		<deep.mysql.version.56>5.6.29</deep.mysql.version.56>
+		<deep.mysql.version.57>5.7.11</deep.mysql.version.57>
+		<deep.mysql.name>deepsql</deep.mysql.name>
+		<deep.mysql.version>${deep.mysql.version.57}</deep.mysql.version>
+		<deep.mysql.dist>${deep.mysql.name}-${deep.mysql.version}</deep.mysql.dist>
+
+		<deep.test>ON</deep.test>
+		<deep.debug>OFF</deep.debug>
+
+		<cmake.test.options>-DDEEP_TEST:BOOLEAN=${deep.test}</cmake.test.options>
+		<cmake.build.options>-DDEEP_DEBUG:BOOLEAN=${deep.debug}</cmake.build.options>
+		<make.jobs>1</make.jobs>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>${commons-logging.version}</version>
+		</dependency>
+	</dependencies>
+
+	<modules>
+		<module>ANT</module>
+	</modules>
+
+	<profiles>
+		<profile>
+			<id>mysql-55</id>
+			<properties>
+			<deep.mysql.version>${deep.mysql.version.55}</deep.mysql.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>mysql-56</id>
+			<properties>
+			<deep.mysql.version>${deep.mysql.version.56}</deep.mysql.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>mysql-57</id>
+			<properties>
+			<deep.mysql.version>${deep.mysql.version.57}</deep.mysql.version>
+			</properties>
+		</profile>
+		<profile>
+			<id>linux-properties</id>
+			<activation>
+				<os>
+					<family>linux</family>
+				</os>
+			</activation>
+			<properties>
+				<linux.build>true</linux.build>
+
+				<script.extension>.sh</script.extension>
+				<dylib.extension>.so</dylib.extension>
+
+				<ant.exec>ant</ant.exec>
+				<maven.exec>mvn</maven.exec>
+				<strip.exec>strip</strip.exec>
+				<strip.options>--strip-all</strip.options>
+
+				<release.platform></release.platform>
+				<release.configuration>ARGS=Release</release.configuration>
+
+				<cmake.project.generator>Unix Makefiles</cmake.project.generator>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>deep-debug</id>
+			<properties>
+				<deep.debug>ON</deep.debug>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>deep-test-skip</id>
+			<activation>
+				<property>
+					<name>maven.test.skip</name>
+				</property>
+			</activation>
+			<properties>
+				<deep.test>OFF</deep.test>
+			</properties>
+		</profile>
+	</profiles>
+</project>

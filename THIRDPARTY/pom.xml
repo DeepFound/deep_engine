@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.deepis</groupId>
+	<artifactId>deepis-3rdparty-root</artifactId>
+	<name>${project.artifactId}</name>
+	<packaging>pom</packaging>
+	<version>1.0.0</version>
+
+	<modules>
+		<module>GooglePerfTools/v2.0.0</module>
+		<module>jemalloc/v3.6.0</module>
+		<module>TinyXML/v1.0.9</module>
+	</modules>
+</project>

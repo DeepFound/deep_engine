@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+  <name>maven-exec-plugin</name>
+  <description></description>
+  <groupId>com.cloudtree</groupId>
+  <artifactId>maven-exec-plugin</artifactId>
+  <version>1.0.0</version>
+  <goalPrefix>exec</goalPrefix>
+  <isolatedRealm>false</isolatedRealm>
+  <inheritedByDefault>true</inheritedByDefault>
+  <mojos>
+    <mojo>
+      <goal>exec</goal>
+      <description>A Plugin for executing external programs.</description>
+      <requiresDependencyResolution>test</requiresDependencyResolution>
+      <requiresDirectInvocation>false</requiresDirectInvocation>
+      <requiresProject>true</requiresProject>
+      <requiresReports>false</requiresReports>
+      <aggregator>false</aggregator>
+      <requiresOnline>false</requiresOnline>
+      <inheritedByDefault>true</inheritedByDefault>
+      <implementation>org.codehaus.mojo.exec.ExecMojo</implementation>
+      <language>java</language>
+      <instantiationStrategy>per-lookup</instantiationStrategy>
+      <executionStrategy>once-per-session</executionStrategy>
+      <parameters>
+        <parameter>
+          <name>arguments</name>
+          <type>java.util.List</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>Can be of type &lt;code&gt;&amp;lt;argument&amp;gt;&lt;/code&gt; or &lt;code&gt;&amp;lt;classpath&amp;gt;&lt;/code&gt; Can be overriden using &quot;exec.args&quot;
+env. variable</description>
+        </parameter>
+        <parameter>
+          <name>basedir</name>
+          <type>java.io.File</type>
+          <required>true</required>
+          <editable>false</editable>
+          <description></description>
+        </parameter>
+        <parameter>
+          <name>classpathScope</name>
+          <type>java.lang.String</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>Defines the scope of the classpath passed to the plugin. Set to compile,test,runtime or system depending on your
+needs. Since 1.1.2, the default value is &apos;runtime&apos; instead of &apos;compile&apos;.</description>
+        </parameter>
+        <parameter>
+          <name>commandlineArgs</name>
+          <type>java.lang.String</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>Arguments for the executed program</description>
+        </parameter>
+        <parameter>
+          <name>environmentVariables</name>
+          <type>java.util.Map</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>Environment variables to pass to the executed program.</description>
+        </parameter>
+        <parameter>
+          <name>executable</name>
+          <type>java.lang.String</type>
+          <required>true</required>
+          <editable>true</editable>
+          <description>The executable. Can be a full path or a the name executable. In the latter case, the executable must be in the
+PATH for the execution to work.</description>
+        </parameter>
+        <parameter>
+          <name>longClasspath</name>
+          <type>boolean</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>If set to true the classpath and the main class will be written to a MANIFEST.MF file and wrapped into a jar.
+Instead of &apos;-classpath/-cp CLASSPATH mainClass&apos; the exec plugin executes &apos;-jar maven-exec.jar&apos;.</description>
+        </parameter>
+        <parameter>
+          <name>outputFile</name>
+          <type>java.io.File</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>Program standard and error output will be redirected to the file specified by this optional field. If not
+specified the standard maven logging is used.</description>
+        </parameter>
+        <parameter>
+          <name>project</name>
+          <type>org.apache.maven.project.MavenProject</type>
+          <required>true</required>
+          <editable>false</editable>
+          <description>The enclosing project.</description>
+        </parameter>
+        <parameter>
+          <name>session</name>
+          <type>org.apache.maven.execution.MavenSession</type>
+          <required>true</required>
+          <editable>false</editable>
+          <description>The current build session instance. This is used for toolchain manager API calls.</description>
+        </parameter>
+        <parameter>
+          <name>skip</name>
+          <type>boolean</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>Skip the execution.</description>
+        </parameter>
+        <parameter>
+          <name>sourceRoot</name>
+          <type>java.io.File</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>This folder is added to the list of those folders containing source to be compiled. Use this if your plugin
+generates source code.</description>
+        </parameter>
+        <parameter>
+          <name>successCodes</name>
+          <type>java.util.List</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>Exit codes to be resolved as successful execution for non-compliant applications (applications not returning 0
+for success).</description>
+        </parameter>
+        <parameter>
+          <name>testSourceRoot</name>
+          <type>java.io.File</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>This folder is added to the list of those folders containing source to be compiled for testing. Use this if your
+plugin generates test source code.</description>
+        </parameter>
+        <parameter>
+          <name>workingDirectory</name>
+          <type>java.io.File</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>The current working directory. Optional. If not specified, basedir will be used.</description>
+        </parameter>
+      </parameters>
+      <configuration>
+        <basedir implementation="java.io.File">${basedir}</basedir>
+        <classpathScope implementation="java.lang.String" default-value="runtime">${exec.classpathScope}</classpathScope>
+        <commandlineArgs implementation="java.lang.String">${exec.args}</commandlineArgs>
+        <executable implementation="java.lang.String">${exec.executable}</executable>
+        <longClasspath implementation="boolean" default-value="false">${exec.longClasspath}</longClasspath>
+        <outputFile implementation="java.io.File">${exec.outputFile}</outputFile>
+        <project implementation="org.apache.maven.project.MavenProject">${project}</project>
+        <session implementation="org.apache.maven.execution.MavenSession">${session}</session>
+        <skip implementation="boolean" default-value="false">${skip}</skip>
+        <sourceRoot implementation="java.io.File">${sourceRoot}</sourceRoot>
+        <testSourceRoot implementation="java.io.File">${testSourceRoot}</testSourceRoot>
+        <workingDirectory implementation="java.io.File">${exec.workingdir}</workingDirectory>
+      </configuration>
+    </mojo>
+    <mojo>
+      <goal>java</goal>
+      <description>Executes the supplied java class in the current VM with the enclosing project&apos;s
+dependencies as classpath.</description>
+      <requiresDependencyResolution>test</requiresDependencyResolution>
+      <requiresDirectInvocation>false</requiresDirectInvocation>
+      <requiresProject>true</requiresProject>
+      <requiresReports>false</requiresReports>
+      <aggregator>false</aggregator>
+      <requiresOnline>false</requiresOnline>
+      <inheritedByDefault>true</inheritedByDefault>
+      <executePhase>validate</executePhase>
+      <implementation>org.codehaus.mojo.exec.ExecJavaMojo</implementation>
+      <language>java</language>
+      <instantiationStrategy>per-lookup</instantiationStrategy>
+      <executionStrategy>once-per-session</executionStrategy>
+      <parameters>
+        <parameter>
+          <name>arguments</name>
+          <type>java.lang.String[]</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>The class arguments.</description>
+        </parameter>
+        <parameter>
+          <name>classpathScope</name>
+          <type>java.lang.String</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>Defines the scope of the classpath passed to the plugin. Set to compile,test,runtime or system depending on your
+needs. Since 1.1.2, the default value is &apos;runtime&apos; instead of &apos;compile&apos;.</description>
+        </parameter>
+        <parameter>
+          <name>cleanupDaemonThreads</name>
+          <type>boolean</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>Wether to interrupt/join and possibly stop the daemon threads upon quitting. &lt;br/&gt; If this is &lt;code&gt;false&lt;/code&gt;,
+ maven does nothing about the daemon threads.  When maven has no more work to do, the VM will normally terminate
+ any remaining daemon threads.
+&lt;p&gt;
+In certain cases (in particular if maven is embedded),
+ you might need to keep this enabled to make sure threads are properly cleaned up to ensure they don&apos;t interfere
+with subsequent activity.
+In that case, see {@link #daemonThreadJoinTimeout} and
+{@link #stopUnresponsiveDaemonThreads} for further tuning.
+&lt;/p&gt;</description>
+        </parameter>
+        <parameter>
+          <name>commandlineArgs</name>
+          <type>java.lang.String</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>Arguments for the executed program</description>
+        </parameter>
+        <parameter>
+          <name>daemonThreadJoinTimeout</name>
+          <type>long</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>This defines the number of milliseconds to wait for daemon threads to quit following their interruption.&lt;br/&gt;
+This is only taken into account if {@link #cleanupDaemonThreads} is &lt;code&gt;true&lt;/code&gt;.
+A value &amp;lt;=0 means to not timeout (i.e. wait indefinitely for threads to finish). Following a timeout, a
+warning will be logged.
+&lt;p&gt;Note: properly coded threads &lt;i&gt;should&lt;/i&gt; terminate upon interruption but some threads may prove
+problematic:  as the VM does interrupt daemon threads, some code may not have been written to handle
+interruption properly. For example java.util.Timer is known to not handle interruptions in JDK &amp;lt;= 1.6.
+So it is not possible for us to infinitely wait by default otherwise maven could hang. A  sensible default 
+value has been chosen, but this default value &lt;i&gt;may change&lt;/i&gt; in the future based on user feedback.&lt;/p&gt;</description>
+        </parameter>
+        <parameter>
+          <name>executableDependency</name>
+          <type>org.codehaus.mojo.exec.ExecutableDependency</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>If provided the ExecutableDependency identifies which of the plugin dependencies
+contains the executable class.  This will have the affect of only including
+plugin dependencies required by the identified ExecutableDependency.
+&lt;p/&gt;
+If includeProjectDependencies is set to &lt;code&gt;true&lt;/code&gt;, all of the project dependencies
+will be included on the executable&apos;s classpath.  Whether a particular project
+dependency is a dependency of the identified ExecutableDependency will be
+irrelevant to its inclusion in the classpath.</description>
+        </parameter>
+        <parameter>
+          <name>includePluginDependencies</name>
+          <type>boolean</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>Indicates if this plugin&apos;s dependencies should be used when executing
+the main class.
+&lt;p/&gt;
+This is useful when project dependencies are not appropriate.  Using only
+the plugin dependencies can be particularly useful when the project is
+not a java project.  For example a mvn project using the csharp plugins
+only expects to see dotnet libraries as dependencies.</description>
+        </parameter>
+        <parameter>
+          <name>includeProjectDependencies</name>
+          <type>boolean</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>Indicates if the project dependencies should be used when executing
+the main class.</description>
+        </parameter>
+        <parameter>
+          <name>keepAlive</name>
+          <type>boolean</type>
+          <deprecated>since 1.1-alpha-1</deprecated>
+          <required>false</required>
+          <editable>true</editable>
+          <description>Indicates if mojo should be kept running after the mainclass terminates.
+Usefull for serverlike apps with deamonthreads.</description>
+        </parameter>
+        <parameter>
+          <name>killAfter</name>
+          <type>long</type>
+          <deprecated>since 1.1-alpha-1</deprecated>
+          <required>false</required>
+          <editable>true</editable>
+          <description>Deprecated this is not needed anymore.</description>
+        </parameter>
+        <parameter>
+          <name>localRepository</name>
+          <type>org.apache.maven.artifact.repository.ArtifactRepository</type>
+          <required>true</required>
+          <editable>false</editable>
+          <description></description>
+        </parameter>
+        <parameter>
+          <name>mainClass</name>
+          <type>java.lang.String</type>
+          <required>true</required>
+          <editable>true</editable>
+          <description>The main class to execute.</description>
+        </parameter>
+        <parameter>
+          <name>pluginDependencies</name>
+          <type>java.util.List</type>
+          <required>false</required>
+          <editable>false</editable>
+          <description></description>
+        </parameter>
+        <parameter>
+          <name>project</name>
+          <type>org.apache.maven.project.MavenProject</type>
+          <required>true</required>
+          <editable>false</editable>
+          <description>The enclosing project.</description>
+        </parameter>
+        <parameter>
+          <name>remoteRepositories</name>
+          <type>java.util.List</type>
+          <required>true</required>
+          <editable>false</editable>
+          <description></description>
+        </parameter>
+        <parameter>
+          <name>skip</name>
+          <type>boolean</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>Skip the execution.</description>
+        </parameter>
+        <parameter>
+          <name>sourceRoot</name>
+          <type>java.io.File</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>This folder is added to the list of those folders containing source to be compiled. Use this if your plugin
+generates source code.</description>
+        </parameter>
+        <parameter>
+          <name>stopUnresponsiveDaemonThreads</name>
+          <type>boolean</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>Wether to call {@link Thread#stop()} following a timing out of waiting for an interrupted thread to finish.
+This is only taken into account if {@link #cleanupDaemonThreads} is &lt;code&gt;true&lt;/code&gt;
+and the {@link #daemonThreadJoinTimeout} threshold has been reached for an uncooperative thread.
+If this is &lt;code&gt;false&lt;/code&gt;, or if {@link Thread#stop()} fails to get the thread to stop, then
+a warning is logged and Maven will continue on while the affected threads (and related objects in memory)
+linger on.  Consider setting this to &lt;code&gt;true&lt;/code&gt; if you are invoking problematic code that you can&apos;t fix. 
+An example is {@link java.util.Timer} which doesn&apos;t respond to interruption.  To have &lt;code&gt;Timer&lt;/code&gt;
+fixed, vote for &lt;a href=&quot;http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6336543&quot;&gt;this bug&lt;/a&gt;.</description>
+        </parameter>
+        <parameter>
+          <name>systemProperties</name>
+          <type>org.codehaus.mojo.exec.Property[]</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>A list of system properties to be passed. Note: as the execution is not forked, some system properties
+required by the JVM cannot be passed here. Use MAVEN_OPTS or the exec:exec instead. See the user guide for
+more information.</description>
+        </parameter>
+        <parameter>
+          <name>testSourceRoot</name>
+          <type>java.io.File</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>This folder is added to the list of those folders containing source to be compiled for testing. Use this if your
+plugin generates test source code.</description>
+        </parameter>
+      </parameters>
+      <configuration>
+        <arguments implementation="java.lang.String[]">${exec.arguments}</arguments>
+        <classpathScope implementation="java.lang.String" default-value="runtime">${exec.classpathScope}</classpathScope>
+        <cleanupDaemonThreads implementation="boolean">${exec.cleanupDaemonThreads} default-value=</cleanupDaemonThreads>
+        <commandlineArgs implementation="java.lang.String">${exec.args}</commandlineArgs>
+        <daemonThreadJoinTimeout implementation="long" default-value="15000">${exec.daemonThreadJoinTimeout}</daemonThreadJoinTimeout>
+        <includePluginDependencies implementation="boolean" default-value="false">${exec.includePluginDependencies}</includePluginDependencies>
+        <includeProjectDependencies implementation="boolean" default-value="true">${exec.includeProjectDependencies}</includeProjectDependencies>
+        <keepAlive implementation="boolean" default-value="false">${exec.keepAlive}</keepAlive>
+        <killAfter implementation="long" default-value="-1">${exec.killAfter}</killAfter>
+        <localRepository implementation="org.apache.maven.artifact.repository.ArtifactRepository">${localRepository}</localRepository>
+        <mainClass implementation="java.lang.String">${exec.mainClass}</mainClass>
+        <pluginDependencies implementation="java.util.List">${plugin.artifacts}</pluginDependencies>
+        <project implementation="org.apache.maven.project.MavenProject">${project}</project>
+        <remoteRepositories implementation="java.util.List">${project.remoteArtifactRepositories}</remoteRepositories>
+        <skip implementation="boolean" default-value="false">${skip}</skip>
+        <sourceRoot implementation="java.io.File">${sourceRoot}</sourceRoot>
+        <stopUnresponsiveDaemonThreads implementation="boolean">${exec.stopUnresponsiveDaemonThreads} default-value=</stopUnresponsiveDaemonThreads>
+        <testSourceRoot implementation="java.io.File">${testSourceRoot}</testSourceRoot>
+      </configuration>
+      <requirements>
+        <requirement>
+          <role>org.apache.maven.artifact.factory.ArtifactFactory</role>
+          <field-name>artifactFactory</field-name>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.resolver.ArtifactResolver</role>
+          <field-name>artifactResolver</field-name>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.artifact.metadata.ArtifactMetadataSource</role>
+          <field-name>metadataSource</field-name>
+        </requirement>
+        <requirement>
+          <role>org.apache.maven.project.MavenProjectBuilder</role>
+          <field-name>projectBuilder</field-name>
+        </requirement>
+      </requirements>
+    </mojo>
+    <mojo>
+      <goal>help</goal>
+      <description>Display help information on maven-exec-plugin.&lt;br/&gt; Call &lt;pre&gt;  mvn exec:help -Ddetail=true -Dgoal=&amp;lt;goal-name&amp;gt;&lt;/pre&gt; to display parameter details.</description>
+      <requiresDirectInvocation>false</requiresDirectInvocation>
+      <requiresProject>false</requiresProject>
+      <requiresReports>false</requiresReports>
+      <aggregator>false</aggregator>
+      <requiresOnline>false</requiresOnline>
+      <inheritedByDefault>true</inheritedByDefault>
+      <implementation>org.codehaus.mojo.exec.HelpMojo</implementation>
+      <language>java</language>
+      <instantiationStrategy>per-lookup</instantiationStrategy>
+      <executionStrategy>once-per-session</executionStrategy>
+      <parameters>
+        <parameter>
+          <name>detail</name>
+          <type>boolean</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>If &lt;code&gt;true&lt;/code&gt;, display all settable properties for each goal.</description>
+        </parameter>
+        <parameter>
+          <name>goal</name>
+          <type>java.lang.String</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>The name of the goal for which to show help. If unspecified, all goals will be displayed.</description>
+        </parameter>
+        <parameter>
+          <name>indentSize</name>
+          <type>int</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>The number of spaces per indentation level, should be positive.</description>
+        </parameter>
+        <parameter>
+          <name>lineLength</name>
+          <type>int</type>
+          <required>false</required>
+          <editable>true</editable>
+          <description>The maximum length of a display line, should be positive.</description>
+        </parameter>
+      </parameters>
+      <configuration>
+        <detail implementation="boolean" default-value="false">${detail}</detail>
+        <goal implementation="java.lang.String">${goal}</goal>
+        <indentSize implementation="int" default-value="2">${indentSize}</indentSize>
+        <lineLength implementation="int" default-value="80">${lineLength}</lineLength>
+      </configuration>
+    </mojo>
+  </mojos>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-toolchain</artifactId>
+      <type>jar</type>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-project</artifactId>
+      <type>jar</type>
+      <version>2.0.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-settings</artifactId>
+      <type>jar</type>
+      <version>2.0.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-profile</artifactId>
+      <type>jar</type>
+      <version>2.0.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-registry</artifactId>
+      <type>jar</type>
+      <version>2.0.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-model</artifactId>
+      <type>jar</type>
+      <version>2.0.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-artifact</artifactId>
+      <type>jar</type>
+      <version>2.0.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-artifact-manager</artifactId>
+      <type>jar</type>
+      <version>2.0.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-repository-metadata</artifactId>
+      <type>jar</type>
+      <version>2.0.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-provider-api</artifactId>
+      <type>jar</type>
+      <version>1.0-beta-2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <type>jar</type>
+      <version>2.0.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-file</artifactId>
+      <type>jar</type>
+      <version>1.0-beta-2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-parameter-documenter</artifactId>
+      <type>jar</type>
+      <version>2.0.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-http-lightweight</artifactId>
+      <type>jar</type>
+      <version>1.0-beta-2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-http-shared</artifactId>
+      <type>jar</type>
+      <version>1.0-beta-2</version>
+    </dependency>
+    <dependency>
+      <groupId>jtidy</groupId>
+      <artifactId>jtidy</artifactId>
+      <type>jar</type>
+      <version>4aug2000r7-dev</version>
+    </dependency>
+    <dependency>
+      <groupId>xml-apis</groupId>
+      <artifactId>xml-apis</artifactId>
+      <type>jar</type>
+      <version>1.0.b2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.reporting</groupId>
+      <artifactId>maven-reporting-api</artifactId>
+      <type>jar</type>
+      <version>2.0.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.doxia</groupId>
+      <artifactId>doxia-sink-api</artifactId>
+      <type>jar</type>
+      <version>1.0-alpha-7</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-error-diagnostics</artifactId>
+      <type>jar</type>
+      <version>2.0.6</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-cli</groupId>
+      <artifactId>commons-cli</artifactId>
+      <type>jar</type>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-ssh-external</artifactId>
+      <type>jar</type>
+      <version>1.0-beta-2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-ssh-common</artifactId>
+      <type>jar</type>
+      <version>1.0-beta-2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-descriptor</artifactId>
+      <type>jar</type>
+      <version>2.0.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-interactivity-api</artifactId>
+      <type>jar</type>
+      <version>1.0-alpha-4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-monitor</artifactId>
+      <type>jar</type>
+      <version>2.0.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-ssh</artifactId>
+      <type>jar</type>
+      <version>1.0-beta-2</version>
+    </dependency>
+    <dependency>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch</artifactId>
+      <type>jar</type>
+      <version>0.1.27</version>
+    </dependency>
+    <dependency>
+      <groupId>classworlds</groupId>
+      <artifactId>classworlds</artifactId>
+      <type>jar</type>
+      <version>1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <type>jar</type>
+      <version>2.0.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <type>jar</type>
+      <version>2.0.5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-container-default</artifactId>
+      <type>jar</type>
+      <version>1.0-alpha-9</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-exec</artifactId>
+      <type>jar</type>
+      <version>1.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.cloudtree</groupId>
+      <artifactId>cloudtree-core</artifactId>
+      <type>jar</type>
+      <version>1.0.0</version>
+    </dependency>
+  </dependencies>
+</plugin>

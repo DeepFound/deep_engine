@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.deepis</groupId>
+	<artifactId>deepis-ant-dependencies</artifactId>
+	<name>${project.artifactId}</name>
+	<packaging>pom</packaging>
+	<version>1.0.0</version>
+
+	<properties>
+		<ant.version>1.8.1</ant.version>
+		<bsf.version>2.4.0</bsf.version>
+		<jython.version>2.5.0</jython.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant</artifactId>
+			<version>${ant.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant-nodeps</artifactId>
+			<version>${ant.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant-apache-bsf</artifactId>
+			<version>${ant.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant-launcher</artifactId>
+			<version>${ant.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>bsf</groupId>
+			<artifactId>bsf</artifactId>
+			<version>${bsf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.python</groupId>
+			<artifactId>jython</artifactId>
+			<version>${jython.version}</version>
+		</dependency>
+	 </dependencies>
+</project>
